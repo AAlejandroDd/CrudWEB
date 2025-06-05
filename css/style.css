@@ -1,0 +1,37 @@
+.add-button{
+    position: fixed; /*El boton queda flotante, sobre el contenido*/
+    background-color:rgb(13, 139, 30);
+
+    bottom: 30px; /*Separacion desde la derecha*/
+
+    right: 40px; /*Separacion desde la derecha*/
+
+    color: rgb(255, 255, 255); /*Color de icono*/
+
+    border-radius:60% ; /*Para redondear El boton*/
+
+    border: none; /*Removemos bordes por defecto*/
+
+    width: 70px;
+    height: 70px;  /*Dimensiones para hacer simetrico el boton*/
+
+    box-shadow: 0 4px 10px rgb(0,0,0, 0.5); /*Sombra del boton*/
+
+    display: flex; /*Activamos flexbox*/
+
+    justify-content: center; /*Alineacion horizontal*/
+
+    align-items: center; /*Alineacion vertical*/
+
+    z-index: 1001; /*Para que el boton siempre quede encima del resto de contenido*/
+
+    transition: transform 0.4s; /*Duracion del efecto*/
+}
+
+.add-button:hover{
+    transform: scale(1.5);
+}
+
+.tabla-scroll{
+    overflow-x: auto;
+}
