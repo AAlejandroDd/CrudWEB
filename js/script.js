@@ -34,7 +34,7 @@ function MostrarRegistros(datos){
                 <td>${persona.Correo}</td>
                 <td>
                     <button>Editar</button>
-                    <button>Eliminar</button>
+                    <button onclick="EliminarPersona(${persona.id})">Eliminar</button>
                 </td>
             </tr>
         `;
@@ -64,11 +64,11 @@ document.getElementById("frmAgregar").addEventListener("submit", async e => {
     e.preventDefault(); //Evita que los datos se envien por defecto
 
     //Capturar los valores del formulario
-    const nombre = document.getElementById("txtNombre").value.trim();
-    const apellido = document.getElementById("txtApellido").value.trim();
-    const correo = document.getElementById("txtCorreo").value.trim();
+    const Nombre = document.getElementById("txtNombre").value.trim();
+    const Apellido = document.getElementById("txtApellido").value.trim();
+    const Correo = document.getElementById("txtCorreo").value.trim();
 
-    if(!nombre || !apellido || !correo){
+    if(!Nombre || !Apellido || !Correo){
         alert("Complete todos los campos");
         return; //Evite que el codigo se siga ejecutando
     }
@@ -98,3 +98,19 @@ document.getElementById("frmAgregar").addEventListener("submit", async e => {
     }
         
 });
+
+
+//Funcion para borrar registros
+async function EliminarPersona(id) {
+    const confirmacion = confirm("¿Quieres eliminar este registro?");
+
+    //Validamos si el usuario eligio aceptar
+    if(confirmacion){
+        await fetch(`${api_url}/${id}`, {
+            method: "DELETE"
+        }); //Llamada al endpoint
+
+        //Recargar la tabla para actualizar la vista
+        ObtenerRegistros();
+    }
+}
