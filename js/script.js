@@ -33,7 +33,7 @@ function MostrarRegistros(datos){
                 <td>${persona.Apellido}</td>
                 <td>${persona.Correo}</td>
                 <td>
-                    <button>Editar</button>
+                    <button onclick= "AbrirModalEditar('${persona.id}' ,'${persona.Nombre}', '${persona.Apellido}', '${persona.Correo}')">Editar</button>
                     <button onclick="EliminarPersona(${persona.id})">Eliminar</button>
                 </td>
             </tr>
@@ -114,3 +114,56 @@ async function EliminarPersona(id) {
         ObtenerRegistros();
     }
 }
+
+
+//Funcionalidad para editar registros
+const modalEditar = document.getElementById("mdEditar");
+const btnCerrarEditar = document.getElementById("btnCerrarEditar");
+
+btnCerrarEditar.addEventListener("click", ()=>{
+    modalEditar.close(); //Cerrar ModalEditar
+});
+
+
+function AbrirModalEditar(id ,Nombre, Apellido, Correo){
+    //Agregamos los valores a los input antes de abrir el modal
+    document.getElementById("txtIdEditar").value = id;
+    document.getElementById("txtNombreEditar").value = Nombre;
+    document.getElementById("txtApellidoEditar").value = Apellido;
+    document.getElementById("txtCorreoEditar").value = Correo;
+
+    //Modal se abre despues de agregar los valores a los input
+    modalEditar.showModal();
+}
+
+document.getElementById("frmEditar").addEventListener("submit", async e => {
+    e.preventDefault(); //Evita que el formulario se envie de golpe
+
+    //Capturamos los valores nuevos del formulario
+    const id = document.getElementById("txtIdEditar").value;
+    const Nombre = document.getElementById("txtNombreEditar").value.trim();
+    const Apellido = document.getElementById("txtApellidoEditar").value.trim();
+    const Correo = document.getElementById("txtCorreoEditar").value.trim();
+
+    //Validacion de los campos
+    if(!id || !Nombre || !Apellido || !Correo){
+        alert("Complete los campos");
+        return; //Evita que el codigo se siga ejecutando
+    }
+
+    //Llamada a la API
+    const respuesta = await fetch(`${api_url}/${id}`, {
+        method: "PUT",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({Correo, Nombre, Apellido})
+    }); 
+
+    if(respuesta.ok){
+        alert("Registro Actualizado con exito"); //Confirmacion
+        modalEditar.close(); //Cerramos el modal
+        ObtenerRegistros(); //Recargamos la tabla
+    }
+    else{
+        alert("Hubo un error al actualizar");
+    }
+});
